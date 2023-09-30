@@ -8,9 +8,9 @@
 #define LEN 8
 
 void swap(char* one, char* two) {
-    *one ^= *two;
-    *two = *one ^ *two;
-    *one ^= *two;
+    char tmp = *one;
+    *one = *two;
+    *two = tmp;
 }
 
 char* getCharsetFinal() {
@@ -34,6 +34,10 @@ char* return_gen() {
     for (int i = 0; i < len; i++) {
         swap(&chars[i], &chars[randomFn(len-1)]);
     }
+
+    for (int i = 0; i < len; i++)
+        printf("%c", chars[i]);
+    printf("\n");
 
     return chars;
 }

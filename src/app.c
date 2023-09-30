@@ -7,9 +7,6 @@ int main(void) {
 
     char* pass = return_gen();
 
-    for (int i = 0; i < len; i++)
-        printf("%c", pass[i]);
-    printf("\n");
     return 0;
 }
 
