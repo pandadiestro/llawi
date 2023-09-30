@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <time.h>
-#include <generate/passgen.c>
+#include <generate/passgen.h>
 
 int main(void) {
     srand(time(NULL));

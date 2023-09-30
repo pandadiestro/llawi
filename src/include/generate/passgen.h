@@ -7,7 +7,7 @@
 
 #define LEN 8
 
-void swap(char* one, char* two) {
+static void swap(char* one, char* two) {
     char tmp = *one;
     *one = *two;
     *two = tmp;
@@ -26,18 +26,22 @@ int randomFn(int limit) {
     return rand()%(limit+1);
 }
 
+void printBunny(char* pass) {
+    char* bunny = "\n\
+  /)/) \n\
+ (˶•༝•) \n\
+୭(づ<[";
+
+    fprintf(stderr, "%s\033[1m %s \033[0m]>", bunny, pass);
+}
+
 char* return_gen() {
     char* chars = getCharsetFinal();
-    for (int i = 0; i < len; i++)
-        printf("%c", chars[i]);
-    printf("\n");
     for (int i = 0; i < len; i++) {
         swap(&chars[i], &chars[randomFn(len-1)]);
     }
 
-    for (int i = 0; i < len; i++)
-        printf("%c", chars[i]);
-    printf("\n");
+    printBunny(chars);
 
     return chars;
 }

@@ -1,6 +1,7 @@
 #!/bin/sh
 
 compiler="gcc"
+CFLAGS="-Wall -Wextra -pedantic"
 
 build_dir="build"
 build_name="llawi-build"
