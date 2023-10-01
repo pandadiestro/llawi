@@ -7,11 +7,10 @@ build_dir="build"
 build_name="llawi-build"
 build_version="0-1"
 
-main_dir="./src"
+main_dir="src"
 main="app.c"
-
 
 include_extra="src/include"
 
-$compiler -I$include_extra "$main_dir/$main" -o "$build_dir/$build_name-$build_version.out"
+$compiler -I$include_extra "$main_dir/$main" --output="$build_dir/$build_name-$build_version.out"
 

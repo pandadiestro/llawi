@@ -1,15 +1,12 @@
-#include <stdio.h>
-#include <time.h>
 #include <generate/passgen.h>
 
-int main(void) {
+int main(int argc, char* argv[]) {
     srand(time(NULL));
 
-    char* pass = return_gen();
+    OPT opts = parseArgs(argc - 1, &argv[1]);
+    char* pass = newPermutatedSet();
 
+    printBunny(pass, opts);
     return 0;
 }
-
-
-
 
