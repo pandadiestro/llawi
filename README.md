@@ -3,6 +3,10 @@
 *yet another CLI password manager*
 
 
+https://github.com/pandadiestro/llawi/assets/71461113/6d29007f-623a-44fc-b1d9-04cb7a32c006
+
+
+
 ## Building
 
 `(ES)`
