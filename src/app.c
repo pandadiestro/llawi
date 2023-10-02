@@ -3,8 +3,6 @@
 int main(int argc, char* argv[]) {
     srand(time(NULL));
 
-    int* localperm = (int*)((int[]){2, 1, 3, 0});
-
     OPT opts = parseArgs(argc - 1, &argv[1]);
     if (opts.key == NULL)
         die("no key was given!");

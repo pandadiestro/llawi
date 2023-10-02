@@ -61,7 +61,6 @@ parseArgs(int argsNum, char* argsList[])
         }
 
         if (strcmp("--key", argsList[i]) == 0) {
-            opts.io_fn = 1;
             if (i < argsNum - 1)
                 if (strlen(argsList[i + 1]) != 13)
                     die("key must be a 13 characters long string!");
