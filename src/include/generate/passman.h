@@ -7,7 +7,7 @@
 const char CHARSET_ALPHANUM[] = "abcdefghijklmnopqrstuvwxyz0123456789";
 const char CHARSET_SPECIAL[]  = " #$%&/()=[]{}";
 
-const int perm[] = {24, 19, 10, 15, 37, 29, 2, 16, 28, 25, 3, 33, 14, 39, 41, 45, 34, 6, 5, 9, 0, 32, 17, 20, 7, 43, 23, 21, 27, 13, 47, 4, 36, 46, 11, 22, 26, 35, 18, 31, 42, 8, 30, 48, 40, 38, 12, 44, 1};
+const int globalPermutationKey[] = {24, 19, 10, 15, 37, 29, 2, 16, 28, 25, 3, 33, 14, 39, 41, 45, 34, 6, 5, 9, 0, 32, 17, 20, 7, 43, 23, 21, 27, 13, 47, 4, 36, 46, 11, 22, 26, 35, 18, 31, 42, 8, 30, 48, 40, 38, 12, 44, 1};
 
 void bunnyPrint(char* pass, OPT opts, char* msg);
 int genNew(OPT opts);
@@ -17,7 +17,7 @@ static char* getCharsetFinal(void);
 static char* newPermutatedSet(void);
 static void substitute(char* str, int len);
 static char* substituteAndPermute(char* str, int len, OPT opts);
-static char* permutate(char* str, const int perm[], int len, const unsigned char way);
+int permutate(char* str, const int perm[], int len, const unsigned char way);
 
 static char*
 getCharsetFinal(void)
@@ -61,11 +61,16 @@ newPermutatedSet(void)
 }
 
 
-static char*
+int
 permutate(char* str, const int perm[], int len, const unsigned char way)
 {
-    int* deperm = calloc(len, sizeof(int));
     char* newStr = calloc(len, sizeof(char));
+    if (newStr == NULL)
+        return -1;
+    if (len == 0)
+        return 0;
+
+    int* deperm = NULL;
 
     switch (way) {
     case 0:
@@ -73,11 +78,17 @@ permutate(char* str, const int perm[], int len, const unsigned char way)
             newStr[i] = str[perm[i]];
         break;
     case 1:
+        deperm = calloc(len, sizeof(int));
+        if (deperm == NULL)
+            return -1;
+
         for (int i = 0; i < len; i++) {
             deperm[perm[i]] = i;
         }
+
         for (int i = 0; i < len; i++)
             newStr[i] = str[deperm[i]];
+        free(deperm);
         break;
     default:
         for (int i = 0; i < len; i++)
@@ -85,8 +96,10 @@ permutate(char* str, const int perm[], int len, const unsigned char way)
         break;
     }
 
-    free(deperm);
-    return newStr;
+    memcpy(newStr, str, len);
+    free(newStr);
+
+    return len;
 }
 
 static char*
@@ -96,7 +109,8 @@ substituteAndPermute(char* str, int len, OPT opts)
         for (int j = 0; j < len; j++) {
             str[j] ^= opts.key[i];
         }
-        str = permutate(str, perm, len, 0);
+        if (permutate(str, globalPermutationKey, len, 0) == -1)
+            return NULL;
     }
 
     return str;
@@ -106,7 +120,8 @@ char*
 decrypt(char* str, int len, OPT opts)
 {
     for (int i = 0; i < rounds; i++) {
-        str = permutate(str, perm, len, 1);
+        if (permutate(str, globalPermutationKey, len, 1) == -1)
+            return NULL;
         for (int j = 0; j < len; j++) {
             str[j] ^= opts.key[i];
         }
@@ -162,7 +177,6 @@ getPass(int len, OPT opts)
 
     fclose(passFile);
     free(fileLocation);
-
     return pass;
 }
 

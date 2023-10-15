@@ -15,10 +15,12 @@ int main(int argc, char* argv[]) {
         pass = newPermutatedSet();
         bunnyPrint(pass, opts, "Here, copy your new password!");
         savePass(pass, len, opts);
+        free(pass);
         break;
     case 1:
         pass = getPass(len, opts);
         bunnyPrint(pass, opts, "Here is your password ^^");
+        free(pass);
         break;
     default:
         break;
